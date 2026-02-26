@@ -45,18 +45,32 @@ app.use('/', routes);
 // Initialize and start server
 async function start() {
   try {
+    console.log('Initializing database...');
     await initDatabase();
-    await initCA();
+    console.log('Database initialized');
 
-    app.listen(PORT, () => {
+    console.log('Initializing CA...');
+    await initCA();
+    console.log('CA initialized');
+
+    const server = app.listen(PORT, () => {
       console.log(`ANS Registry running on port ${PORT}`);
       console.log(`Health: http://localhost:${PORT}/health`);
       console.log(`Registry: http://localhost:${PORT}/.well-known/ans-registry.json`);
     });
+
+    server.on('error', (err) => {
+      console.error('Server error:', err);
+      process.exit(1);
+    });
+
   } catch (error) {
     console.error('Failed to start:', error);
     process.exit(1);
   }
 }
 
-start();
+start().catch(err => {
+  console.error('Unhandled error in start():', err);
+  process.exit(1);
+});
