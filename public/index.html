@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ANS Registry - Agent Name Service</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.6;
+      color: #1a1a2e;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 50px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+      margin-bottom: 30px;
+    }
+    h1 { font-size: 3em; margin-bottom: 20px; color: #667eea; }
+    h2 { font-size: 1.8em; margin-bottom: 15px; color: #333; margin-top: 40px; }
+    h3 { font-size: 1.3em; margin-bottom: 10px; color: #555; }
+    p { font-size: 1.1em; color: #666; margin-bottom: 15px; }
+    .hero { text-align: center; }
+    .hero p { font-size: 1.3em; }
+    .badge {
+      display: inline-block;
+      background: #10b981;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-size: 0.9em;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .pain {
+      background: #fef3f2;
+      border-left: 4px solid #ef4444;
+      padding: 20px;
+      border-radius: 0 10px 10px 0;
+      margin: 20px 0;
+    }
+    .solution {
+      background: #f0fdf4;
+      border-left: 4px solid #10b981;
+      padding: 20px;
+      border-radius: 0 10px 10px 0;
+    }
+    .steps { counter-reset: step; }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      margin: 25px 0;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 12px;
+    }
+    .step-num {
+      counter-increment: step;
+      background: #667eea;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      flex-shrink: 0;
+      margin-right: 20px;
+    }
+    .step-content h3 { margin-top: 0; }
+    code {
+      background: #1a1a2e;
+      color: #10b981;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    .example {
+      background: #1a1a2e;
+      color: #a5b4fc;
+      padding: 20px;
+      border-radius: 10px;
+      font-family: monospace;
+      overflow-x: auto;
+    }
+    .api-endpoints {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .endpoint {
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+    .endpoint code { display: block; margin-bottom: 5px; }
+    footer {
+      text-align: center;
+      color: white;
+      padding: 20px;
+      opacity: 0.8;
+    }
+    .logo { font-size: 2em; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card hero">
+      <div class="logo">🔗</div>
+      <span class="badge">🟢 Live</span>
+      <h1>ANS Registry</h1>
+      <p><strong>Agent Name Service</strong> — A decentralized registry for AI agents. Think of it as DNS, but for AI agents instead of websites.</p>
+    </div>
+
+    <div class="card">
+      <h2>🔴 The Problem</h2>
+      <div class="pain">
+        <p><strong>AI agents are invisible to each other.</strong></p>
+        <p>Today, if you build an AI agent and want other agents to discover and communicate with it — there's no standard way to do it. You need to:</p>
+        <ul style="margin-left: 20px; color: #666;">
+          <li>Manually share your endpoint with every other agent</li>
+          <li>Maintain a central directory (which you control)</li>
+          <li>Hope others trust your self-signed certificates</li>
+        </ul>
+        <p style="margin-top: 15px;">This creates <strong>fragmentation</strong> — every AI agent ecosystem has its own proprietary discovery mechanism.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🟢 The Solution</h2>
+      <div class="solution">
+        <p><strong>ANS Registry gives AI agents a verifiable identity.</strong></p>
+        <p>Just like DNS maps domain names to IP addresses, ANS maps agent names to their endpoints and certificates. But with one crucial difference:</p>
+        <ul style="margin-left: 20px; color: #166534; line-height: 2;">
+          <li>✅ <strong>Verified identity</strong> — Agents prove they own their domain via DNS</li>
+          <li>✅ <strong> TLS certificates</strong> — Every agent gets a signed identity certificate</li>
+          <li>✅ <strong>Transparency log</strong> — All registrations are publicly auditable (Merkle tree)</li>
+          <li>✅ <strong>Self-hosted</strong> — No single company controls the registry</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📖 How It Works</h2>
+      <p>ANS Registry follows the <strong>DNS-01 challenge</strong> pattern (same as Let's Encrypt):</p>
+      
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h3>Register Your Agent</h3>
+            <p>Submit your agent's name, domain, and a Certificate Signing Request (CSR):</p>
+            <div class="example">POST /v1/agents/register
+{
+  "agentDisplayName": "Glasha",
+  "agentHost": "glasha.clawmom.com",
+  "version": "1.0.0",
+  "identityCsrPEM": "-----BEGIN CSR..."
+}</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h3>Prove Domain Ownership</h3>
+            <p>We give you a TXT record to add to your domain. This proves you control the domain:</p>
+            <div class="example">_ans-challenge.glasha.clawmom.com
+TXT "18c20e6923c1b5117e7c28cf18b14c74"</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h3>Verify & Get Certificate</h3>
+            <p>Call the verify endpoint. We check the TXT record and issue your identity certificate:</p>
+            <div class="example">POST /v1/agents/{agentId}/verify-dns
+
+→ Returns: {
+  "status": "ACTIVE",
+  "certificates": {
+    "identityCert": "-----BEGIN CERTIFICATE...",
+    "caCert": "-----BEGIN CERTIFICATE..."
+  }
+}</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h3>Other Agents Can Find You</h3>
+            <p>Any agent can now discover and verify your agent through the registry:</p>
+            <div class="example">GET /v1/agents?search=glasha
+
+→ Returns: {
+  "agents": [{
+    "ansName": "ans://v1.0.0.glasha.clawmom.com",
+    "agentHost": "glasha.clawmom.com"
+  }]
+}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🔌 API Endpoints</h2>
+      <div class="api-endpoints">
+        <div class="endpoint">
+          <code>POST /v1/agents/register</code>
+          <p>Register a new agent</p>
+        </div>
+        <div class="endpoint">
+          <code>POST /v1/agents/:id/verify-dns</code>
+          <p>Verify DNS challenge</p>
+        </div>
+        <div class="endpoint">
+          <code>GET /v1/agents</code>
+          <p>Search registered agents</p>
+        </div>
+        <div class="endpoint">
+          <code>GET /v1/agents/:id</code>
+          <p>Get agent details</p>
+        </div>
+        <div class="endpoint">
+          <code>GET /v1/log/checkpoint</code>
+          <p>Transparency log state</p>
+        </div>
+        <div class="endpoint">
+          <code>GET /.well-known/ans-registry.json</code>
+          <p>Registry metadata</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🤔 Why Should You Care?</h2>
+      <p>If you're building <strong>multi-agent systems</strong>, ANS Registry enables:</p>
+      <ul style="margin-left: 20px; color: #666; line-height: 2;">
+        <li><strong>Agent discovery</strong> — No hardcoded endpoints</li>
+        <li><strong>Mutual TLS</strong> — Encrypted, authenticated communication</li>
+        <li><strong>Trust</strong> — Verify you're talking to the real agent</li>
+        <li><strong>Portability</strong> — Move your agent to a new domain, keep your identity</li>
+      </ul>
+      <p style="margin-top: 20px;">Built on the same principles as DNS and X.509 certificates — proven technologies that power the entire internet.</p>
+    </div>
+
+    <footer>
+      <p>ANS Registry — Self-hosted Agent Name Service</p>
+      <p>Built with Node.js + SQLite</p>
+    </footer>
+  </div>
+</body>
+</html>

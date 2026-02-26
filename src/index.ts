@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import path from 'path';
 import { initDatabase } from './database';
 import { initCA, getCAFingerprint } from './ca';
 import routes from './routes';
@@ -10,6 +11,14 @@ const PORT = process.env.PORT || 8080;
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Static files (landing page)
+app.use(express.static(path.join(__dirname, '..', 'public')));
+
+// Root route - serve landing page
+app.get('/', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+});
 
 // Health check
 app.get('/health', (req: Request, res: Response) => {
