@@ -65,7 +65,12 @@ async function start() {
     });
 
     // Keep process alive
-    process.stdin.resume();
+    // process.stdin.resume(); // doesn't work in docker
+
+    // Alternative: periodic heartbeat
+    setInterval(() => {
+      console.log(`[heartbeat] ANS Registry alive on port ${PORT}`);
+    }, 30000);
 
   } catch (error) {
     console.error('Failed to start:', error);
