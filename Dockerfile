@@ -18,7 +18,7 @@ RUN npm run build
 RUN mkdir -p /app/data
 
 # Expose port
-EXPOSE $PORT
+EXPOSE 8080
 
 # Start server
 CMD ["npm", "start"]
