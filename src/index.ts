@@ -64,6 +64,9 @@ async function start() {
       process.exit(1);
     });
 
+    // Keep process alive
+    process.stdin.resume();
+
   } catch (error) {
     console.error('Failed to start:', error);
     process.exit(1);
